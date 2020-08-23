@@ -17,7 +17,7 @@ public class TestStream {
     static {
 
         Apple apple1 = new Apple(1, "app-1", BigDecimal.ONE, 1);
-        Apple apple2 = new Apple(1, "app-2", BigDecimal.TEN, 2);
+        Apple apple2 = new Apple(1, "", BigDecimal.TEN, 2);
         Apple apple3 = new Apple(3, "ban-3", BigDecimal.ZERO, 3);
         Apple apple4 = new Apple(4, "ban-4", BigDecimal.ONE, 4);
         apples.add(apple1);
@@ -37,16 +37,21 @@ public class TestStream {
         System.out.println(appleMap);
 
         //过滤 : 包含 ban 的
-        List<Apple> banList = apples.stream().filter(a -> a.getName().contains("ban")).collect(Collectors.toList());
-        System.out.println(banList);
+        List<Apple> banList = apples.stream().filter(a -> {
+            if (a == null || a.getName().length() == 0) {
+                return false;//不符合过滤条件返回false
+            }
+            return a.getName().contains("ban");
+        }).collect(Collectors.toList());
+        System.out.println(banList + "    size :" + banList.size());
 
         //求和
-        BigDecimal reduce = apples.stream().map(Apple::getMoney).reduce(BigDecimal.ZERO, BigDecimal::add);
-        System.out.println(reduce);
+//        BigDecimal reduce = apples.stream().map(Apple::getMoney).reduce(BigDecimal.ZERO, BigDecimal::add);
+//        System.out.println(reduce);
 
         //最大和最小
 //        Collectors.maxBy(Comparator.comparing(Apple::getNum));
-        
+
         //去重
 
 
